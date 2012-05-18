@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Ancestors</key>
+	<array>
+		<string>com.apple.dt.unit.cocoaTouchApplication.ios4</string>
+	</array>
+	<key>Identifier</key>
+	<string>com.apple.dt.unit.coreDataCocoaTouchApplication.ios4</string>
+	<key>Kind</key>
+	<string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Default</key>
+			<string>false</string>
+			<key>Description</key>
+			<string>Indicates whether the application should use the Core Data framework for storage.</string>
+			<key>Identifier</key>
+			<string>coreData</string>
+			<key>Name</key>
+			<string>Use Core Data</string>
+			<key>Type</key>
+			<string>checkbox</string>
+			<key>Units</key>
+			<dict>
+				<key>true</key>
+				<dict>
+					<key>Definitions</key>
+					<dict>
+						<key>___PACKAGENAMEASIDENTIFIER___.xcdatamodeld</key>
+						<dict>
+							<key>Path</key>
+							<string>___PACKAGENAMEASIDENTIFIER___.xcdatamodeld</string>
+						</dict>
+						<key>___PACKAGENAMEASIDENTIFIER___AppDelegate.h:methods:coreData</key>
+						<string>@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+- (void)saveContext;
+- (NSURL *)applicationDocumentsDirectory;
+</string>
+						<key>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:applicationWillTerminate:comments</key>
+						<string>// Saves changes in the application&apos;s managed object context before the application terminates.
+</string>
+						<key>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:applicationWillTerminate:save</key>
+						<string>[self saveContext];
+</string>
+						<key>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:awakeFromNib</key>
+						<string>- (void)awakeFromNib
+{
+    /*
+     Typically you should set up the Core Data stack here, usually by passing the managed object context to the first view controller.
+     self.&lt;#View controller#&gt;.managedObjectContext = self.managedObjectContext;
+    */
+}
+</string>
+						<key>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:coreData</key>
+						<string>- (void)saveContext
+{
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    if (managedObjectContext != nil)
+    {
+        if ([managedObjectContext hasChanges] &amp;&amp; ![managedObjectContext save:&amp;error])
+        {
+            /*
+             Replace this implementation with code to handle the error appropriately.
+             
+             abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+             */
+            NSLog(@&quot;Unresolved error %@, %@&quot;, error, [error userInfo]);
+            abort();
+        } 
+    }
+}
+
+#pragma mark - Core Data stack
+
+/**
+ Returns the managed object context for the application.
+ If the context doesn&apos;t already exist, it is created and bound to the persistent store coordinator for the application.
+ */
+- (NSManagedObjectContext *)managedObjectContext
+{
+    if (__managedObjectContext != nil)
+    {
+        return __managedObjectContext;
+    }
+    
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    if (coordinator != nil)
+    {
+        __managedObjectContext = [[NSManagedObjectContext alloc] init];
+        [__managedObjectContext setPersistentStoreCoordinator:coordinator];
+    }
+    return __managedObjectContext;
+}
+
+/**
+ Returns the managed object model for the application.
+ If the model doesn&apos;t already exist, it is created from the application&apos;s model.
+ */
+- (NSManagedObjectModel *)managedObjectModel
+{
+    if (__managedObjectModel != nil)
+    {
+        return __managedObjectModel;
+    }
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@&quot;___PACKAGENAMEASIDENTIFIER___&quot; withExtension:@&quot;momd&quot;];
+    __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
+    return __managedObjectModel;
+}
+
+/**
+ Returns the persistent store coordinator for the application.
+ If the coordinator doesn&apos;t already exist, it is created and the application&apos;s store added to it.
+ */
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+{
+    if (__persistentStoreCoordinator != nil)
+    {
+        return __persistentStoreCoordinator;
+    }
+    
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@&quot;___PACKAGENAMEASIDENTIFIER___.sqlite&quot;];
+    
+    NSError *error = nil;
+    __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+    if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&amp;error])
+    {
+        /*
+         Replace this implementation with code to handle the error appropriately.
+         
+         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+         
+         Typical reasons for an error here include:
+         * The persistent store is not accessible;
+         * The schema for the persistent store is incompatible with current managed object model.
+         Check the error message to determine what the actual problem was.
+         
+         
+         If the persistent store is not accessible, there is typically something wrong with the file path. Often, a file URL is pointing into the application&apos;s resources directory instead of a writeable directory.
+         
+         If you encounter schema incompatibility errors during development, you can reduce their frequency by:
+         * Simply deleting the existing store:
+         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil]
+         
+         * Performing automatic lightweight migration by passing the following dictionary as the options parameter: 
+         [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+         
+         Lightweight migration will only work for a limited set of schema changes; consult &quot;Core Data Model Versioning and Data Migration Programming Guide&quot; for details.
+         
+         */
+        NSLog(@&quot;Unresolved error %@, %@&quot;, error, [error userInfo]);
+        abort();
+    }    
+    
+    return __persistentStoreCoordinator;
+}
+
+#pragma mark - Application&apos;s Documents directory
+
+/**
+ Returns the URL to the application&apos;s Documents directory.
+ */
+- (NSURL *)applicationDocumentsDirectory
+{
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+</string>
+						<key>___PACKAGENAME___-Prefix.pch:objC:importCoreData</key>
+						<string>#import &lt;CoreData/CoreData.h&gt;</string>
+					</dict>
+					<key>Nodes</key>
+					<array>
+						<string>___PACKAGENAMEASIDENTIFIER___.xcdatamodeld</string>
+						<string>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:awakeFromNib</string>
+						<string>___PACKAGENAMEASIDENTIFIER___AppDelegate.h:methods:coreData</string>
+						<string>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:implementation:synthesize:managedObjectContext=__managedObjectContext</string>
+						<string>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:implementation:synthesize:managedObjectModel=__managedObjectModel</string>
+						<string>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:implementation:synthesize:persistentStoreCoordinator=__persistentStoreCoordinator</string>
+						<string>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:implementation:dealloc:__managedObjectContext</string>
+						<string>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:implementation:dealloc:__managedObjectModel</string>
+						<string>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:implementation:dealloc:__persistentStoreCoordinator</string>
+						<string>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:applicationWillTerminate:save</string>
+						<string>___PACKAGENAMEASIDENTIFIER___AppDelegate.m:coreData</string>
+						<string>___PACKAGENAME___-Prefix.pch:objC:importCoreData</string>
+					</array>
+					<key>Targets</key>
+					<array>
+						<dict>
+							<key>Frameworks</key>
+							<array>
+								<string>CoreData</string>
+							</array>
+						</dict>
+					</array>
+				</dict>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
